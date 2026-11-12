@@ -1,5 +1,8 @@
 package com.example.siswaroom_pam.room
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 @Entity(tableName = "tblSiswa")
 data class Siswa(
     @PrimaryKey(autoGenerate = true)
