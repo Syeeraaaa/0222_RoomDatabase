@@ -1,14 +1,12 @@
 package com.example.siswaroom_pam.ui
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.siswaroom_pam.room.RepositoriSiswa
+import com.example.siswaroom_pam.repositori.RepositoriSiswa
 import com.example.siswaroom_pam.room.Siswa
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+
 
 class EntryViewModel(private val repositoriSiswa: RepositoriSiswa) : ViewModel() {
 

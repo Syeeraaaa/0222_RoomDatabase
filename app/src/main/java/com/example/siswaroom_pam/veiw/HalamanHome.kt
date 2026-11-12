@@ -22,6 +22,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -32,12 +34,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.roomdatabase.R
 import com.example.siswaroom_pam.room.Siswa
+import com.example.siswaroom_pam.uicontroller.DestinasiNavigasi
 import com.example.siswaroom_pam.uicontroller.SiswaTopAppBar
 import com.example.siswaroom_pam.viewmodel.HomeViewModel
+import com.example.siswaroom_pam.viewmodel.PenyediaViewModel
 
-object DestinasiHome : DestinasiHome {
+object DestinasiHome : DestinasiNavigasi {
     override val route = "home"
-    override val titlesRes = R.string.app_name
+    override val titleRes = R.string.app_name
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,21 +49,21 @@ object DestinasiHome : DestinasiHome {
 fun HomeScreen(
     navigateToItemEntry: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = viewModel(factory = PenyediaViewModel.Factory),
-    collectAsState: Any.() -> Unit
-){
+    viewModel: HomeViewModel = viewModel(factory = PenyediaViewModel.Factory)
+) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             SiswaTopAppBar(
-                title = stringResource(DestinasiHome.titlesRes),
+                title = stringResource(DestinasiHome.titleRes),
                 canNavigateBack = false,
                 scrollBehavior = scrollBehavior
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = navigateToItemEntry,
+            FloatingActionButton(
+                onClick = navigateToItemEntry,
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
             ) {
@@ -69,8 +73,7 @@ fun HomeScreen(
                 )
             }
         },
-    ) {
-        innerPadding ->
+    ) { innerPadding ->
         val uiStateSiswa by viewModel.homeUiState.collectAsState()
         BodyHome(
             itemSiswa = uiStateSiswa.listSiswa,
@@ -89,15 +92,14 @@ fun BodyHome(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-    ){
+    ) {
         if (itemSiswa.isEmpty()) {
             Text(
                 text = stringResource(R.string.deskripsi_no_item),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleLarge
             )
-        }
-        else {
+        } else {
             ListSiswa(
                 itemSiswa = itemSiswa,
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
@@ -107,8 +109,9 @@ fun BodyHome(
 }
 
 @Composable
-fun ListSiswa(itemSiswa: List<Siswa>,
-              modifier: Modifier
+fun ListSiswa(
+    itemSiswa: List<Siswa>,
+    modifier: Modifier = Modifier
 ) {
     LazyColumn(modifier = modifier) {
         items(items = itemSiswa, key = { it.id }) { person ->
