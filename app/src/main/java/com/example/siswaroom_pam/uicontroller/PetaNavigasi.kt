@@ -1,0 +1,10 @@
+package com.example.siswaroom_pam.uicontroller
+
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+
+@Composable
+fun SiswaApp(navController: NavHostController= rememberNavController()){
+    HostNavigasi(navController = navController)
+}
